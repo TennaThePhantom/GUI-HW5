@@ -110,14 +110,14 @@ $(document).ready(function () {
 			if (type === "double-word") specialTileSquare = "Double<br>Word";
 			if (type === "triple-word") specialTileSquare = "Triple<br>Word";
 
-			const $square = $("<div></div>")
+			const square = $("<div></div>")
 				.addClass("board-square")
 				.addClass(type)
 				.attr("data-index", index)
 				.attr("data-type", type)
 				.html(specialTileSquare);
 
-			board.append($square);
+			board.append(square);
 		});
 		setupDroppablesTiles();
 	}
