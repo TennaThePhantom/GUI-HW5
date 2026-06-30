@@ -96,10 +96,10 @@ $(document).ready(function () {
 
 	// create the Scrabble Board for user
 	function renderBoard() {
-		const $board = $("#scrabble-board");
-		$board.empty();
+		const board = $("#scrabble-board");
+		board.empty();
 
-		// blank and special squares
+		// special squares
 		boardLayout.forEach((type, index) => {
 			let specialTileSquare = "";
 			if (type === "double-letter") specialTileSquare = "Double<br>Letter";
@@ -114,7 +114,7 @@ $(document).ready(function () {
 				.attr("data-type", type)
 				.html(specialTileSquare);
 
-			$board.append($square);
+			board.append($square);
 		});
 		setupDroppablesTiles();
 	}
