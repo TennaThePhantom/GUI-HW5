@@ -77,7 +77,10 @@ $(document).ready(function () {
 		tileBag = [];
 		scrabbleDistributionTiles.forEach((tilesInfoForUser) => {
 			for (let tile = 0; tile < tilesInfoForUser.count; tile++) {
-				tileBag.push({ letter: tilesInfoForUser.letter, value: tilesInfoForUser.value });
+				tileBag.push({
+					letter: tilesInfoForUser.letter,
+					value: tilesInfoForUser.value,
+				});
 			}
 		});
 		// Shuffle the bag of tiles so user won't get same ones in order over and over again
@@ -121,8 +124,8 @@ $(document).ready(function () {
 
 	// create the Tile rack for user
 	function renderTileRack() {
-		const playerTileRack = $("#tile-rack");
-		playerTileRack.empty();
+		const playerRack = $("#tile-rack");
+		playerRack.empty();
 
 		playerTileRack.forEach((tile, index) => {
 			// Format for Blank Tiles
@@ -135,7 +138,7 @@ $(document).ready(function () {
 				.attr("data-value", tile.value)
 				.html(`${displayLetter}<span class="score">${displayScore}</span>`);
 
-			playerTileRack.append(tileToRender);
+			playerRack.append(tileToRender);
 		});
 		setupDraggableTiles();
 	}
