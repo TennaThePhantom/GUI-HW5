@@ -1,5 +1,5 @@
 $(document).ready(function () {
-	// Popup Helper simple error message
+	// Popup - simple error message
 	function showPopup(message) {
 		$("#toastMessage").text(message);
 		const toastElement = document.getElementById("gameToast");
@@ -7,8 +7,8 @@ $(document).ready(function () {
 		toast.show();
 	}
 
-	// Data info for Scrabble Tiles I followed this one - https://www.scrabblewizard.com/scrabble-tile-distribution/
-	const scrabbleDistribution = [
+	// Data info for Scrabble Tiles - I followed this one - https://www.scrabblewizard.com/scrabble-tile-distribution/
+	const scrabbleDistributionTiles = [
 		{ letter: "A", value: 1, count: 9 },
 		{ letter: "B", value: 3, count: 2 },
 		{ letter: "C", value: 3, count: 2 },
@@ -35,7 +35,7 @@ $(document).ready(function () {
 		{ letter: "X", value: 8, count: 1 },
 		{ letter: "Y", value: 4, count: 2 },
 		{ letter: "Z", value: 10, count: 1 },
-		{ letter: "_", value: 0, count: 2 }, 
+		{ letter: "_", value: 0, count: 2 },
 	];
 
 	// Board layout -15 squares) Empty string = normal square.
@@ -72,15 +72,15 @@ $(document).ready(function () {
 		drawTiles(7);
 	}
 
-	// Build the bag of 100 tiles
+	// Build the bag of tiles for user
 	function buildTileBag() {
 		tileBag = [];
-		scrabbleDistribution.forEach((tileDef) => {
-			for (let tile = 0; tile < tileDef.count; tile++) {
-				tileBag.push({ letter: tileDef.letter, value: tileDef.value });
+		scrabbleDistributionTiles.forEach((tilesInfoForUser) => {
+			for (let tile = 0; tile < tilesInfoForUser.count; tile++) {
+				tileBag.push({ letter: tilesInfoForUser.letter, value: tilesInfoForUser.value });
 			}
 		});
-		// Shuffle the bag of tiles so user won't get same ones in order over and over again 
+		// Shuffle the bag of tiles so user won't get same ones in order over and over again
 		tileBag.sort(() => Math.random() - 0.5);
 	}
 
@@ -94,11 +94,12 @@ $(document).ready(function () {
 		renderTileRack();
 	}
 
-	// Render/create the Scrabble Board for user
+	// create the Scrabble Board for user
 	function renderBoard() {
 		const $board = $("#scrabble-board");
 		$board.empty();
 
+		// blank and special squares
 		boardLayout.forEach((type, index) => {
 			let label = "";
 			if (type === "double-letter") label = "Double<br>Letter";
@@ -151,7 +152,7 @@ $(document).ready(function () {
 		});
 	}
 
-	// Configure Droppable board squares & rack
+	//  Droppable board squares & rack
 	function setupDroppablesTiles() {
 		$(".board-square").droppable({
 			accept: function (draggable) {
@@ -180,7 +181,7 @@ $(document).ready(function () {
 					return;
 				}
 
-				// Snap into position physically in the DOM
+				// Snap tiles into position physically in the board
 				$tile.detach().css({ top: 0, left: 0 }).appendTo($square);
 				$tile.addClass("on-board");
 
@@ -214,7 +215,7 @@ $(document).ready(function () {
 
 		if (occupiedIndices.length === 0) return true; // First tile goes anywhere
 		return (
-			occupiedIndices.includes(newIndex - 1) || // behind and front 
+			occupiedIndices.includes(newIndex - 1) || // behind and front
 			occupiedIndices.includes(newIndex + 1)
 		);
 	}
@@ -229,7 +230,7 @@ $(document).ready(function () {
 			if ($tile.length > 0) {
 				let letterExtraPoints = parseInt($tile.attr("data-value"));
 				let squareType = $(this).attr("data-type");
-				
+
 				// special tiles(extra points if user use  them)
 				if (squareType === "double-letter") letterExtraPoints *= 2;
 				if (squareType === "triple-letter") letterExtraPoints *= 3;
@@ -256,12 +257,12 @@ $(document).ready(function () {
 		totalScore += score;
 		$("#total-score").text(totalScore);
 
-		// Remove used tiles from the board & memory
+		// Remove used tiles from the board
 		$(".board-square .scrabble-tile").each(function () {
 			$(this).remove();
 		});
 
-		// Sync playerRack array with what remains in the #tile-rack DOM
+		// Sync playerRack array with what remains in the tile rack
 		playerTileRack = [];
 		$("#tile-rack .scrabble-tile").each(function () {
 			playerTileRack.push({
@@ -277,7 +278,7 @@ $(document).ready(function () {
 		drawTiles(7 - playerTileRack.length);
 	});
 
-	// Recall / Reset current tiles back to rack
+	// Recall & reset current tiles back to rack
 	$("#btn-reset").click(function () {
 		$(".board-square .scrabble-tile").each(function () {
 			let $tile = $(this);
