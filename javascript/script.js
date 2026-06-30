@@ -168,7 +168,7 @@ $(document).ready(function () {
 
 				// Check adjacency requirement
 				if (!isValidPlacement(targetSquare.attr("data-index"), draggableTile)) {
-					// Bounce back visually
+					// Bounce back
 					draggableTile.animate({ top: 0, left: 0 }, "fast");
 
 					if (draggableTile.parent().attr("id") === "tile-rack") {
