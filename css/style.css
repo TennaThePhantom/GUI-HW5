@@ -76,7 +76,7 @@ body {
 }
 
 /* Hover effect*/
-.scrabble-tile:not(.locked):hover {
+.scrabble-tile:hover {
 	transform: scale(1.1);
 }
 
