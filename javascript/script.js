@@ -38,7 +38,7 @@ $(document).ready(function () {
 		{ letter: "_", value: 0, count: 2 },
 	];
 
-	// Board layout -15 squares) Empty string = normal square.
+	// Board layout -15 squares) Empty string = normal square
 	const boardLayout = [
 		"",
 		"",
@@ -201,22 +201,22 @@ $(document).ready(function () {
 		});
 	}
 
-	// Logic to enforce tiles being placed next to each other(adjacentment)
-	function isValidPlacement(newIndex, $draggedTile) {
-		newIndex = parseInt(newIndex);
-		let occupiedIndices = [];
+	// to enforce tiles being placed next to each other(+1 and -1)(adjacency)
+	function isValidPlacement(newTileIndex, draggedTile) {
+		newTileIndex = parseInt(newTileIndex);
+		let takenTileSpotsOnBoard = [];
 
 		$(".board-square").each(function () {
 			const childTile = $(this).children(".scrabble-tile");
-			if (childTile.length > 0 && !childTile.is($draggedTile)) {
-				occupiedIndices.push(parseInt($(this).attr("data-index")));
+			if (childTile.length > 0 && !childTile.is(draggedTile)) {
+				takenTileSpotsOnBoard.push(parseInt($(this).attr("data-index")));
 			}
 		});
 
-		if (occupiedIndices.length === 0) return true; // First tile goes anywhere
+		if (takenTileSpotsOnBoard.length === 0) return true; // First tile goes anywhere
 		return (
-			occupiedIndices.includes(newIndex - 1) || // behind and front
-			occupiedIndices.includes(newIndex + 1)
+			takenTileSpotsOnBoard.includes(newTileIndex - 1) || // behind and front
+			takenTileSpotsOnBoard.includes(newTileIndex + 1)
 		);
 	}
 
@@ -246,7 +246,7 @@ $(document).ready(function () {
 		return currentScore;
 	}
 
-	// Submit Word Button(no word sleep check)
+	// user click on word Button(no word check)
 	$("#btn-submit").click(function () {
 		const score = calculateCurrentScore();
 		if (score === 0) {
@@ -262,7 +262,7 @@ $(document).ready(function () {
 			$(this).remove();
 		});
 
-		// Sync playerRack array with what remains in the tile rack
+		// Sync the playerRack array with what remains in the tile rack
 		playerTileRack = [];
 		$("#tile-rack .scrabble-tile").each(function () {
 			playerTileRack.push({
