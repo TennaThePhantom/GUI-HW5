@@ -201,7 +201,7 @@ $(document).ready(function () {
 		});
 	}
 
-	// Logic to enforce tiles being placed next to each other(adjacent)
+	// Logic to enforce tiles being placed next to each other(adjacentment)
 	function isValidPlacement(newIndex, $draggedTile) {
 		newIndex = parseInt(newIndex);
 		let occupiedIndices = [];
