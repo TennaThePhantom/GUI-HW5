@@ -101,18 +101,18 @@ $(document).ready(function () {
 
 		// blank and special squares
 		boardLayout.forEach((type, index) => {
-			let label = "";
-			if (type === "double-letter") label = "Double<br>Letter";
-			if (type === "triple-letter") label = "Triple<br>Letter";
-			if (type === "double-word") label = "Double<br>Word";
-			if (type === "triple-word") label = "Triple<br>Word";
+			let specialTileSquare = "";
+			if (type === "double-letter") specialTileSquare = "Double<br>Letter";
+			if (type === "triple-letter") specialTileSquare = "Triple<br>Letter";
+			if (type === "double-word") specialTileSquare = "Double<br>Word";
+			if (type === "triple-word") specialTileSquare = "Triple<br>Word";
 
 			const $square = $("<div></div>")
 				.addClass("board-square")
 				.addClass(type)
 				.attr("data-index", index)
 				.attr("data-type", type)
-				.html(label);
+				.html(specialTileSquare);
 
 			$board.append($square);
 		});
@@ -121,21 +121,21 @@ $(document).ready(function () {
 
 	// create the Tile rack for user
 	function renderTileRack() {
-		const $rack = $("#tile-rack");
-		$rack.empty();
+		const playerTileRack = $("#tile-rack");
+		playerTileRack.empty();
 
 		playerTileRack.forEach((tile, index) => {
 			// Format for Blank Tiles
 			let displayLetter = tile.letter === "_" ? "" : tile.letter;
 			let displayScore = tile.value === 0 ? "" : tile.value;
 
-			const $tile = $("<div></div>")
+			const tileToRender = $("<div></div>")
 				.addClass("scrabble-tile")
 				.attr("data-letter", tile.letter)
 				.attr("data-value", tile.value)
 				.html(`${displayLetter}<span class="score">${displayScore}</span>`);
 
-			$rack.append($tile);
+			playerTileRack.append(tileToRender);
 		});
 		setupDraggableTiles();
 	}
@@ -163,16 +163,16 @@ $(document).ready(function () {
 				);
 			},
 			drop: function (event, ui) {
-				let $tile = ui.draggable;
-				let $square = $(this);
+				let draggableTile = ui.draggable;
+				let targetSquare = $(this);
 
 				// Check adjacency requirement
-				if (!isValidPlacement($square.attr("data-index"), $tile)) {
+				if (!isValidPlacement(targetSquare.attr("data-index"), draggableTile)) {
 					// Bounce back visually
-					$tile.animate({ top: 0, left: 0 }, "fast");
+					draggableTile.animate({ top: 0, left: 0 }, "fast");
 
-					if ($tile.parent().attr("id") === "tile-rack") {
-						$("#tile-rack").append($tile);
+					if (draggableTile.parent().attr("id") === "tile-rack") {
+						$("#tile-rack").append(draggableTile);
 					}
 
 					showPopup(
@@ -182,8 +182,8 @@ $(document).ready(function () {
 				}
 
 				// Snap tiles into position physically in the board
-				$tile.detach().css({ top: 0, left: 0 }).appendTo($square);
-				$tile.addClass("on-board");
+				draggableTile.detach().css({ top: 0, left: 0 }).appendTo(targetSquare);
+				draggableTile.addClass("on-board");
 
 				calculateCurrentScore();
 			},
@@ -193,9 +193,9 @@ $(document).ready(function () {
 		$("#tile-rack").droppable({
 			accept: ".scrabble-tile",
 			drop: function (event, ui) {
-				let $tile = ui.draggable;
-				$tile.detach().css({ top: 0, left: 0 }).appendTo(this);
-				$tile.removeClass("on-board");
+				let draggableTile = ui.draggable;
+				draggableTile.detach().css({ top: 0, left: 0 }).appendTo(this);
+				draggableTile.removeClass("on-board");
 				calculateCurrentScore();
 			},
 		});
@@ -207,8 +207,8 @@ $(document).ready(function () {
 		let occupiedIndices = [];
 
 		$(".board-square").each(function () {
-			const $childTile = $(this).children(".scrabble-tile");
-			if ($childTile.length > 0 && !$childTile.is($draggedTile)) {
+			const childTile = $(this).children(".scrabble-tile");
+			if (childTile.length > 0 && !childTile.is($draggedTile)) {
 				occupiedIndices.push(parseInt($(this).attr("data-index")));
 			}
 		});
@@ -226,9 +226,9 @@ $(document).ready(function () {
 		let wordMultiplier = 1;
 
 		$(".board-square").each(function () {
-			const $tile = $(this).children(".scrabble-tile");
-			if ($tile.length > 0) {
-				let letterExtraPoints = parseInt($tile.attr("data-value"));
+			const tile = $(this).children(".scrabble-tile");
+			if (tile.length > 0) {
+				let letterExtraPoints = parseInt(tile.attr("data-value"));
 				let squareType = $(this).attr("data-type");
 
 				// special tiles(extra points if user use  them)
@@ -281,9 +281,9 @@ $(document).ready(function () {
 	// Recall & reset current tiles back to rack
 	$("#btn-reset").click(function () {
 		$(".board-square .scrabble-tile").each(function () {
-			let $tile = $(this);
-			$tile.detach().css({ top: 0, left: 0 }).appendTo("#tile-rack");
-			$tile.removeClass("on-board");
+			let boardTile = $(this);
+			boardTile.detach().css({ top: 0, left: 0 }).appendTo("#tile-rack");
+			boardTile.removeClass("on-board");
 		});
 		calculateCurrentScore();
 	});
