@@ -80,7 +80,3 @@ body {
 	transform: scale(1.1);
 }
 
-.scrabble-tile.locked {
-	cursor: not-allowed;
-	opacity: 0.6;
-}
