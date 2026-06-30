@@ -127,19 +127,24 @@ $(document).ready(function () {
 		const playerRack = $("#tile-rack");
 		playerRack.empty();
 
+		// create tiles from user image
 		playerTileRack.forEach((tile, index) => {
-			// Format for Blank Tiles
-			let displayLetter = tile.letter === "_" ? "" : tile.letter;
-			let displayScore = tile.value === 0 ? "" : tile.value;
+			let fileName =
+				tile.letter === "_"
+					? "Scrabble_Tile_Blank.jpg"
+					: `Scrabble_Tile_${tile.letter}.jpg`;
+			let imagePath = `images/${fileName}`; 
 
-			const tileToRender = $("<div></div>")
+			// Create imgs tag for each tile
+			const tileToRender = $("<img>")
 				.addClass("scrabble-tile")
+				.attr("src", imagePath)
 				.attr("data-letter", tile.letter)
 				.attr("data-value", tile.value)
-				.html(`${displayLetter}<span class="score">${displayScore}</span>`);
-
+				.attr("alt", tile.letter);
 			playerRack.append(tileToRender);
 		});
+
 		setupDraggableTiles();
 	}
 
